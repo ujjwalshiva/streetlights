@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Streetights Complaints</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="design.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Streetlight Complaints</h1>
+        <img src="logo.png" alt="logo">
+        <div class="grid-container">
+            <form>
+                <label for="name"> Name </label><br>
+                <input type="text" id="name" name="name" placeholder="Enter Name">
+                <br>
+
+                <label for="email"> E-Mail Address </label><br>
+                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                <br>
+            
+                <label for="light_area"> Streetlight Area </label><br>
+                <select id="light_area" onchange="checkChange()">
+                    <option value="Rural"> Rural </option>
+                    <option value="Urban"> Urban </option>
+                </select><br>
+
+                <label for="problem"> Problem Description</label><br>
+                <textarea id="problem" name="problem" placeholder="Maximum 100 Words" rows="4" cols="50" maxlength="500"></textarea><br>
+                
+                <label for="image">Upload Image of Streetlight</label><br>
+                <input type="file" name = "image" id="image_input" accept="image/png, image/jpg, image/jpeg">
+                <div class ="display_image" id="display_image"></div>
+
+
+            </form>
+            
+            
+
+        </div>
+        <button onclick="getlocation()"> Submit </button>
+        <br>
+
+        <div id="location"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
