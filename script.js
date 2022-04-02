@@ -37,13 +37,13 @@ function showPosition(position) {
     var x = "Your current location is (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
     
     gmaps_url = `http://www.google.com/maps/place/${latitude},${longitude}`;
-    positionstack_url = `http://api.positionstack.com/v1/reverse?access_key=f2fea958c22bd849642bc74d024d6557&query=${latitude},${longitude}`;
-    fetch(positionstack_url)
+    locationiq_url = `https://us1.locationiq.com/v1/reverse.php?key=pk.11e23eb3c7840b9aec617753ec4922ca&lat=${latitude}&lon=${longitude}&format=json`;
+    fetch(locationiq_url)
     .then(function(response) {
         return response.json();
     }).then(data => {
         console.log(data);
-        let city = data.data[0].label;
+        let city = data.display_name;
         console.log(city);
         console.log(gmaps_url);
         let output = `You're current location is <a href="${gmaps_url}" target="_blank">${city}</a>`;
