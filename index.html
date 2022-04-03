@@ -25,7 +25,7 @@
                 <br>
             
                 <label for="light_area"> Streetlight Area </label><br>
-                <select id="light_area" onchange="checkChange()">
+                <select id="light_area">
                     <option value="Rural"> Rural </option>
                     <option value="Urban"> Urban </option>
                 </select><br>
@@ -43,13 +43,87 @@
             
 
         </div>
-        <button onclick="getlocation()"> Submit </button>
+        <button id = "submit"> Submit </button>
         <br>
 
         <div id="location"></div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+        integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getDatabase, ref, set, child, update, onValue, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // Import the functions you need from the SDKs you need
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwMeEcW-M1RU23-5KzXf6lIjSObPY_0No",
+            authDomain: "streetlight-complaints.firebaseapp.com",
+            projectId: "streetlight-complaints",
+            storageBucket: "streetlight-complaints.appspot.com",
+            messagingSenderId: "445061643328",
+            appId: "1:445061643328:web:7a53c8ac9798ced7f3f3a5",
+            measurementId: "G-M8R83GDFF8",
+            databaseURL: "https://streetlight-complaints-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById("submit").addEventListener("click", submit, false);
+
+    
+    function submit() {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            let name = document.querySelector('#name').value;
+            let email = document.querySelector('#email').value;
+            let light_area = document.querySelector('#light_area').value;
+            let problem_desc = document.querySelector('#problem').value;
+            //let image_url = document.querySelector('#image').value;
+
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            var x = "Your current location is (" + "Latitude: " + position.coords.latitude + ", " + "Longitude: " + position.coords.longitude + ")";
+
+            let gmaps_url = `http://www.google.com/maps/place/${latitude},${longitude}`;
+            let locationiq_url = `https://us1.locationiq.com/v1/reverse.php?key=pk.11e23eb3c7840b9aec617753ec4922ca&lat=${latitude}&lon=${longitude}&format=json`;
+            fetch(locationiq_url)
+                .then(function (response) {
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+                    let city = data.display_name;
+                    console.log(city);
+                    console.log(gmaps_url);
+                    let output = `You're current location is <a href="${gmaps_url}" target="_blank">${city}</a>`;
+                    //document.getElementById("location").innerHTML = output;
+
+                    let date = moment().utcOffset("+05:30").format("DD-MM-YYYY h:mm:ss a");
+
+                    set(ref(db, 'complaints/' + date), {
+                        "date": date,
+                        "name": name,
+                        "mail_id": email,
+                        "streetlight_area": light_area,
+                        "location": city,
+                        "gmaps_link": gmaps_url,
+                        "problem_desc": problem_desc
+                    });
+                })           
+
+            document.write('Data Submitted Succesfully');
+                  
+        });
+    };
+    </script>
 </body>
 
 </html>
