@@ -34,7 +34,7 @@
                 <textarea id="problem" name="problem" placeholder="Maximum 100 Words" rows="4" cols="50" maxlength="500"></textarea><br>
                 
                 <label for="image">Upload Image of Streetlight</label><br>
-                <input type="file" name = "image" id="image_input" accept="image/png, image/jpg, image/jpeg">
+                <input type="file" name = "image" id="image_input" accept="image/*" capture>
                 <div class ="display_image" id="display_image"></div>
 
 
@@ -82,12 +82,12 @@
 
     
     function submit() {
+
         navigator.geolocation.getCurrentPosition(function(position) {
             let name = document.querySelector('#name').value;
             let email = document.querySelector('#email').value;
             let light_area = document.querySelector('#light_area').value;
             let problem_desc = document.querySelector('#problem').value;
-            //let image_url = document.querySelector('#image').value;
 
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
@@ -115,7 +115,8 @@
                         "streetlight_area": light_area,
                         "location": city,
                         "gmaps_link": gmaps_url,
-                        "problem_desc": problem_desc
+                        "problem_desc": problem_desc,
+                        "image_url": url
                     });
                 })           
 
