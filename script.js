@@ -1,4 +1,5 @@
-let imgbb_api = "https://api.imgbb.com/1/upload?key=db8607dd64175f1c3527ff2101aba830&image="
+let imgbb_api = "https://api.imgbb.com/1/upload?key=ecbbe6c33db4a4c7204107dea81edf52&image="
+// db8607dd64175f1c3527ff2101aba830
 var url;
 
 const image_input = document.querySelector("#image_input");
